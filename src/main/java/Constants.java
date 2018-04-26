@@ -9,6 +9,5 @@ public class Constants {
     public static final String USERNAME="neo4j";
     public static final String PASSWORD="password";
     public static final String CONNECTION_PROTOCOL="bolt";
-    public static int MAX_NUMBER_OF_PERSONS = 10000;
-
+    public static final String NAMESPACE_LABEL="PERSONS";
 }

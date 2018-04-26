@@ -1,7 +1,7 @@
 package faker;
 
 /**
- * Created by prabhjot.singh on 4/26/18.
+ * Created by jaspreet.kaur on 4/26/18.
  */
 public class Person {
     String firstName;

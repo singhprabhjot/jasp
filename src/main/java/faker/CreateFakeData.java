@@ -12,7 +12,7 @@ public class CreateFakeData {
 
     // Number of People you would like to create in the database
     int maxNumberOfPersons;
-    int strengthOfRelationships = 5;
+    int strengthOfRelationships = 3;
 
     public CreateFakeData(int maxNumberOfPersons) {
         this.maxNumberOfPersons = maxNumberOfPersons;
@@ -38,6 +38,10 @@ public class CreateFakeData {
         return person;
     }
 
+    public void createMovie(){
+        faker.gameOfThrones().character();
+    }
+
     public void createFriends() {
         int n = this.maxNumberOfPersons;
         for (int i = 0; i < n; i++) {
@@ -56,8 +60,14 @@ public class CreateFakeData {
                 while (friend1 == friend2) {
                     friend2 = getRandomFriend();
                 }
-                addToFriendList(friend1, friend2);
-                addToFriendList(friend2, friend1);
+
+                // Skiping few usernames so as to have mixed type of graph.
+                if ((personsList.get(friend1).getUsername().startsWith("a")) || personsList.get(friend2).getUsername().startsWith("a")) {
+                    continue;
+                } else {
+                    addToFriendList(friend1, friend2);
+                    addToFriendList(friend2, friend1);
+                }
             }
         }
     }

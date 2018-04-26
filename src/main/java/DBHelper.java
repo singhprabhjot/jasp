@@ -9,26 +9,25 @@ import java.util.Set;
 /**
  * Created by jaspreet.kaur on 4/26/18.
  */
-public class RunQueries {
+public class DBHelper {
     DBConnector driver;
 
-    public RunQueries(DBConnector instance) {
-        driver = instance;
+    public DBHelper() {
+        this.driver = DBConnector.getInstance();
     }
 
-
     public void addFriendsToDB(List<Person> friendsList) {
-        Gson gson = new Gson();
         for (Person p : friendsList) {
 //            System.out.println(p.toString());
             String createFriend = "CREATE (" + p.getUsername() + ":PERSON " + p.toJSON() + ")";
 //            System.out.println(createFriend);
             driver.runCommand(createFriend);
         }
+        System.out.println("Adding friends to NEO4J: Done:");
 
     }
 
-    public void createFriendsRelationsship(Map<String, Set<String>> friendsMap) {
+    public void createFriendsRelationShip(Map<String, Set<String>> friendsMap) {
         Gson gson = new Gson();
         Iterator it = friendsMap.entrySet().iterator();
         while (it.hasNext()) {
@@ -38,36 +37,23 @@ public class RunQueries {
             for (String s : friendsSet) {
                 String createRelationship = "MATCH (u:PERSON {username:'" + candidate + "'}), (v:PERSON {username:'" + s + "'})\n" +
                         "CREATE (u)-[:FRIENDS]->(v)";
-                System.out.println(createRelationship);
-
+//              System.out.println(createRelationship);
                 driver.runCommand(createRelationship);
             }
 
         }
-
+        System.out.println("Create Relationships: Done");
     }
 
-    public static void main(String s[]) {
-        RunQueries runQueries = new RunQueries(DBConnector.getInstance());
-        runQueries.runSampleQuery();
+
+    public void createIndexOnField(String fieldName) {
+        driver.runCommand(" CREATE INDEX ON :" + Constants.NAMESPACE_LABEL + "(" + fieldName + ")");
+        System.out.println("Create Index  field [" + fieldName + "] : Done ");
     }
 
-    private void runSampleQuery() {
-//        driver.runCommand("CREATE (a:Greeting) " +
-//                "SET a.message = $message " +
-//                "RETURN a.message + ', from node ' + id(a)", "helllllllooo");
-
-        driver.runCommand("CREATE (a:Greeting) " +
-                "SET a.message = \"prabhjot\" " +
-                "RETURN a.message + ', from node ' + id(a)");
-
-    }
-
-    public void setIndexes() {
-//        CREATE INDEX ON :User(username)
-//        CREATE INDEX ON :Role(name)
-//        MATCH (u:User {username:'admin'}), (r:Role {name:'ROLE_WEB_USER'})
-//        CREATE (u)-[:HAS_ROLE]->(r)
+    public void deleteLabelIfExists() {
+        driver.runCommand("MATCH (n:" + Constants.NAMESPACE_LABEL + ") DETACH DELETE n");
+        System.out.println("Deletion of label [" + Constants.NAMESPACE_LABEL + "]: Done");
 
     }
 }
