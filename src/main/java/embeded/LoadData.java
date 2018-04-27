@@ -32,7 +32,7 @@ public class LoadData {
     }
 
 
-    public void loadPersonData(int numberOfPerson) {
+    public void loadPersonData(int numberOfPerson, int gOTCharactersCount) {
         Person p = new Person();
 
         Transaction tx = null;
@@ -43,60 +43,31 @@ public class LoadData {
         fakeData.createRelationship();
         addFriendsToDB(CreateFakePersons.personsList);
         createFriendsRelationShip(CreateFakePersons.friendsMap);
-        CreateFakeGotCharacters.createGOTCharacters();
+
+        CreateFakeGotCharacters.createGOTCharacters(gOTCharactersCount);
         addGOTCharactersToDB(CreateFakeGotCharacters.gOTCharacterSet);
-
-//        Node steve = graphDB.createNode(Labels.USER);
-//        steve.setProperty("name", "Steve");
-//        Node linda = graphDB.createNode(Labels.USER);
-//        linda.setProperty("name", "Linda");
-//        Node michael = graphDB.createNode(Labels.USER);
-//        michael.setProperty("name", "Michael");
-//        Node rebecca = graphDB.createNode(Labels.USER);
-//        rebecca.setProperty("name", "Rebecca");
-//
-//
-//        steve.createRelationshipTo(michael, RelationshipTypes.IS_FRIEND);
-//        steve.createRelationshipTo(rebecca, RelationshipTypes.IS_FRIEND);
-//        steve.createRelationshipTo(linda, RelationshipTypes.IS_FRIEND);
-//
-
-//        Node divergent = graphDB.createNode(Labels.GOT_CHARACTERS);
-//        divergent.setProperty("name", "Divergent");
-//        Node hero = graphDB.createNode(Labels.GOT_CHARACTERS);
-//        hero.setProperty("name", "Big Hero 6");
-//        Node cinderella = graphDB.createNode(Labels.GOT_CHARACTERS);
-//        cinderella.setProperty("name", "Cinderella");
-//        Node interview = graphDB.createNode(Labels.GOT_CHARACTERS);
-//        interview.setProperty("name", "The Interview");
-
-
-//        likeGotCharacter(steve, divergent, 5);
-//        likeGotCharacter(steve, hero, 5);
-//        likeGotCharacter(steve, cinderella, 4);
-//        likeGotCharacter(rebecca, hero, 5);
-//        likeGotCharacter(rebecca, cinderella, 5);
-//        likeGotCharacter(michael, hero, 5);
-//        likeGotCharacter(michael, cinderella, 3);
-//        likeGotCharacter(linda, divergent, 4);
-//        likeGotCharacter(linda, hero, 5);
-//        likeGotCharacter(linda, cinderella, 5);
         createLinkageBetweenPersonAndGOTCharacters();
         tx.success();
-
 
 
     }
 
     private void createLinkageBetweenPersonAndGOTCharacters() {
+        System.out.println("Add Linkages between PERSONS and GOT Characters: Started");
         List<Person> personsList = CreateFakePersons.personsList;
+
+        int tenPercentSize = CreateFakePersons.personsList.size() / 10;
         for (int i = 0; i < personsList.size(); i++) {
+            if (i % tenPercentSize == 0) {
+                System.out.println("Adding Linkages between PERSONS and GOT Characters in NEO4J. Linkages for [" + i + "] of [" + personsList.size() + "] persons completed");
+            }
             String username = personsList.get(i).getUsername();
-            for (int j = 0; j < Constants.MOVIES_PER_PERSON; j++) {
+            for (int j = 0; j < Constants.GOT_CHARACTERS_PER_PERSON; j++) {
                 String gotCharacter = getRandomGOTCharacter();
                 likeGotCharacter(username, gotCharacter, getRandomLikeScore());
             }
         }
+        System.out.println("Adding Linkages between PERSONS and GOT Characters: Done");
     }
 
     private int getRandomLikeScore() {
@@ -162,17 +133,23 @@ public class LoadData {
     }
 
     private void createFriendsRelationShip(Map<String, Set<String>> friendsMap) {
-        System.out.println("Creating Relationships: Started");
+        System.out.println("Add Relationships to NEO4J: Started");
         Iterator it = friendsMap.entrySet().iterator();
+        int i = 0;
+        int tenPercentSize = friendsMap.size() / 10;
         while (it.hasNext()) {
+            if (i % tenPercentSize == 0) {
+                System.out.println("Adding Relationships to NEO4J: [" + i + "] of [" + friendsMap.size() + "] relationships completed");
+            }
             Map.Entry<String, Set<Person>> pair = (Map.Entry) it.next();
             String candidate = pair.getKey();
             Set<String> friendsSet = friendsMap.get(candidate);
             for (String s : friendsSet) {
                 createRelationshipInTwoUsers(candidate, s);
             }
+            i++;
         }
-        System.out.println("Create Relationships: Done");
+        System.out.println("Add Relationships to NEO4J: Done");
     }
 
 

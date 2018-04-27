@@ -1,3 +1,5 @@
+package archived;
+
 import com.google.gson.Gson;
 import faker.Person;
 import utilities.Constants;
@@ -10,7 +12,10 @@ import java.util.Set;
 
 /**
  * Created by jaspreet.kaur on 4/26/18.
+ * Ignore this class
+ * This class is no longer in use.
  */
+
 public class DBHelper {
     DBConnector driver;
 
@@ -23,7 +28,7 @@ public class DBHelper {
 //            System.out.println(p.toString());
             String createFriend = "CREATE (" + p.getUsername() + ":PERSON " + p.toJSON() + ")";
 //            System.out.println(createFriend);
-            driver.runCommand(createFriend);
+//            driver.runCommand(createFriend);
         }
         System.out.println("Adding friends to NEO4J: Done:");
 
@@ -40,7 +45,7 @@ public class DBHelper {
                 String createRelationship = "MATCH (u:PERSON {username:'" + candidate + "'}), (v:PERSON {username:'" + s + "'})\n" +
                         "CREATE (u)-[:FRIENDS]->(v)";
 //              System.out.println(createRelationshipInTwoUsers);
-                driver.runCommand(createRelationship);
+//                driver.runCommand(createRelationship);
             }
 
         }
@@ -49,12 +54,12 @@ public class DBHelper {
 
 
     public void createIndexOnField(String fieldName) {
-        driver.runCommand(" CREATE INDEX ON :" + Constants.NAMESPACE_LABEL + "(" + fieldName + ")");
+//        driver.runCommand(" CREATE INDEX ON :" + Constants.NAMESPACE_LABEL + "(" + fieldName + ")");
         System.out.println("Create Index  field [" + fieldName + "] : Done ");
     }
 
     public void deleteLabelIfExists() {
-        driver.runCommand("MATCH (n:" + Constants.NAMESPACE_LABEL + ") DETACH DELETE n");
+//        driver.runCommand("MATCH (n:" + Constants.NAMESPACE_LABEL + ") DETACH DELETE n");
         System.out.println("Deletion of label [" + Constants.NAMESPACE_LABEL + "]: Done");
 
     }

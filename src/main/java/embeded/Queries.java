@@ -6,8 +6,8 @@ import org.neo4j.graphdb.traversal.*;
 import utilities.DBConnector;
 
 /**
- * Created by jaspreet.Kaur on 4/26/18.
- * Help taken from informatica.com
+ * Created by jaspreet.kaur on 4/26/18.
+ * Help taken from informit.com/
  */
 public class Queries {
     GraphDatabaseService graphDB;
@@ -31,22 +31,27 @@ public class Queries {
     public void runQueryToFindUsers() {
         System.out.println("\n\nQUERY: Find all users");
         System.out.println("Users ------>>>>");
+        int i = 0;
         ResourceIterator<Node> users = graphDB.findNodes(LoadData.Labels.USER);
         while (users.hasNext()) {
             Node user = users.next();
             try {
-                System.out.println("    " + user.getProperty("username"));
+                if (i % 50 == 0) {
+                    System.out.println();
+                }
+                System.out.print("    " + user.getProperty("username"));
             } catch (Exception e) {
 
             }
+            i++;
         }
     }
 
 
     public void getAverageRating() {
-        System.out.println("\n\nQUERY: Get Average Movie Ratings");
+        System.out.println("\n\nQUERY: Get Average GOT Character Ratings");
         ResourceIterator<Node> gotCharacters = graphDB.findNodes(LoadData.Labels.GOT_CHARACTERS);
-        System.out.println("Movie Ratings:");
+        System.out.println("GOT Character Ratings:");
         while (gotCharacters.hasNext()) {
             Node gotChar = gotCharacters.next();
 
@@ -85,16 +90,16 @@ public class Queries {
     }
 
     public void gotCharactersThatMyFriendsHaveLiked() {
-        System.out.println("\n\nQUERY: Find all characters that a users friends have liked using Traversal API");
         for (int i = 0; i < 5; i++) {
+            long startTime=System.currentTimeMillis();
             String username = CreateFakePersons.personsList.get(i).getUsername();
             Node person = findAPerson(username);
 
-            // Find Michael's friends
+            // Find usernames's friends
             TraversalDescription myFriends = graphDB.traversalDescription()
                     .breadthFirst()
                     .relationships(LoadData.RelationshipTypes.IS_FRIEND)
-                    .evaluator(Evaluators.atDepth(100));
+                    .evaluator(Evaluators.atDepth(10));
             Traverser traverser = myFriends.traverse(person);
             System.out.println(username + "'s friends: ");
             for (Node friend : traverser.nodes()) {
@@ -107,7 +112,7 @@ public class Queries {
                     // Choose a depth-first search strategy
                     .depthFirst()
 
-                    // At depth 0 traverse the IS_FRIEND_OF relationships,
+                    // At depth 0 traverse the IS_FRIEND relationships,
                     // at a depth of 1 traverse the LIKES_CHARACTER relationship
                     .expand(new PathExpander<Object>() {
                         @Override
@@ -122,7 +127,7 @@ public class Queries {
                                         LoadData.RelationshipTypes.IS_FRIEND);
                             } else {
                                 // A depth of 1 would mean that we're at a friend and
-                                // should expand his HAS_SEEN relationships
+                                // should expand his LIKES_CHARACTER relationships
                                 return path.endNode().getRelationships(
                                         LoadData.RelationshipTypes.LIKES_CHARACTER);
                             }
@@ -134,8 +139,8 @@ public class Queries {
                         }
                     })
 
-                    // Only go down to a depth of 2
-                    .evaluator(Evaluators.atDepth(2))
+                    // Only go down to a depth of 10
+                    .evaluator(Evaluators.atDepth(10))
 
                     // Only return gOTCharacters
                     .evaluator(new Evaluator() {
@@ -150,7 +155,7 @@ public class Queries {
 
             traverser = gOTCharactersThatFriendsLike.traverse(person);
 
-            System.out.println("GotCharacters that " + username + " friends have seen: ");
+            System.out.println("GotCharacters that " + username + " friends have liked: ");
             for (Node gotCharacter : traverser.nodes()) {
                 System.out.println("\t" + gotCharacter.getProperty("name"));
             }

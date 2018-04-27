@@ -1,7 +1,6 @@
 package faker;
 
 import com.github.javafaker.Faker;
-import utilities.Constants;
 
 import java.util.HashSet;
 
@@ -12,9 +11,9 @@ public class CreateFakeGotCharacters {
 
     public static HashSet<String> gOTCharacterSet = new HashSet<>();
 
-    public static void createGOTCharacters() {
+    public static void createGOTCharacters(int gOTCharactersCount) {
         Faker faker = new Faker();
-        for (int i = 0; i < Constants.MAX_NUMBER_OF_GOT_CHARACTERS; i++) {
+        for (int i = 0; i < gOTCharactersCount; i++) {
             gOTCharacterSet.add(faker.gameOfThrones().character());
         }
     }
