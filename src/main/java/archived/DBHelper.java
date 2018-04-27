@@ -12,6 +12,7 @@ import java.util.Set;
 
 /**
  * Created by jaspreet.kaur on 4/26/18.
+ * This class was orignally designed to connect with Neo4j using bolt connector
  * Ignore this class
  * This class is no longer in use.
  */

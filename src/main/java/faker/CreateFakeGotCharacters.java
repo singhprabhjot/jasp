@@ -11,6 +11,11 @@ public class CreateFakeGotCharacters {
 
     public static HashSet<String> gOTCharacterSet = new HashSet<>();
 
+    /**
+     * Function to create Game of Thrones characters
+     * by taking input of how many characters are required.
+     * @param gOTCharactersCount
+     */
     public static void createGOTCharacters(int gOTCharactersCount) {
         Faker faker = new Faker();
         for (int i = 0; i < gOTCharactersCount; i++) {

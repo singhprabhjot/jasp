@@ -7,6 +7,7 @@ import utilities.DBConnector;
 
 /**
  * Created by jaspreet.kaur on 4/26/18.
+ * This class provides all the queries that we run in NEO4J.
  * Help taken from informit.com/
  */
 public class Queries {
@@ -16,7 +17,9 @@ public class Queries {
         graphDB = DBConnector.getInstance().getGraphDBConnector();
     }
 
-    // Find all gotCharacters in our database
+    /**
+     * Find all Game of Thrones characters in our database
+     */
     public void runQueryForGOTCharacters() {
         System.out.println("\n\nQUERY: Find all gotCharacters in our database\n");
         ResourceIterator<Node> gotCharacters = graphDB.findNodes(LoadData.Labels.GOT_CHARACTERS);
@@ -27,7 +30,9 @@ public class Queries {
         }
     }
 
-    // Find all users
+    /**
+     * Find all users with Label = USER
+     */
     public void runQueryToFindUsers() {
         System.out.println("\n\nQUERY: Find all users");
         System.out.println("Users ------>>>>");
@@ -47,7 +52,9 @@ public class Queries {
         }
     }
 
-
+    /**
+     * Query to run Average rating.
+     */
     public void getAverageRating() {
         System.out.println("\n\nQUERY: Get Average GOT Character Ratings");
         ResourceIterator<Node> gotCharacters = graphDB.findNodes(LoadData.Labels.GOT_CHARACTERS);
@@ -71,7 +78,9 @@ public class Queries {
         }
     }
 
-    //Next let's find all characters that a user has seen:
+    /**
+     * Find all characters that a user has liked:
+     */
     public void getCharactersAUserHasLiked() {
         System.out.println("\n\nQUERY: Find all characters that a user has liked");
         ResourceIterator<Node> users = graphDB.findNodes(LoadData.Labels.USER);
@@ -89,6 +98,10 @@ public class Queries {
 
     }
 
+    /**
+     * Using Traversal API to find all the characters
+     * that friends of a particular username have liked
+     */
     public void gotCharactersThatMyFriendsHaveLiked() {
         for (int i = 0; i < 5; i++) {
             long startTime=System.currentTimeMillis();
@@ -162,6 +175,11 @@ public class Queries {
         }
     }
 
+    /**
+     * To return a node back after searching a username
+     * @param username
+     * @return
+     */
     private Node findAPerson(String username) {
         Node myNode = graphDB.findNode(LoadData.Labels.USER, "username", username);
         return myNode;

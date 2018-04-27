@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * Created by jaspreet.Kaur on 4/26/18.
+ * This class is used to load fake data into NEO4J
  */
 
 public class LoadData {

@@ -8,7 +8,7 @@ import java.io.File;
 public class DBConnector {
 
     private static DBConnector instance = null;
-//    private final Driver driver;
+    //    private final Driver driver;
     GraphDatabaseService graphDb;
 
     protected DBConnector() {
@@ -27,36 +27,11 @@ public class DBConnector {
     }
 
 
-//    @Override
-//    public void close() throws Exception {
-//        driver.close();
-//    }
-//
-//    public void runCommand(String command, String message) {
-//        try (Session session = driver.session()) {
-//            String greeting = session.writeTransaction(new TransactionWork<String>() {
-//                @Override
-//                public String execute(Transaction tx) {
-//                    StatementResult result = tx.run(command,
-//                            parameters("message", message));
-//                    return result.single().get(0).asString();
-//                }
-//            });
-//        }
-//    }
-
-//    public void runCommand(String command) {
-//        try (Session session = driver.session()) {
-//            String greeting = session.writeTransaction(new TransactionWork<String>() {
-//                @Override
-//                public String execute(Transaction tx) {
-//                    StatementResult result = tx.run(command);
-//                    return null;
-//                }
-//            });
-//        }
-//    }
-
+    /**
+     * This will return GraphDatabaseService to the caller
+     *
+     * @return
+     */
     public GraphDatabaseService getGraphDBConnector() {
         return graphDb;
     }
@@ -75,6 +50,35 @@ public class DBConnector {
 //            });
 //        }
 //        return records;
+//    }
+//    @Override
+//    public void close() throws Exception {
+//        driver.close();
+//    }
+//
+//    public void runCommand(String command, String message) {
+//        try (Session session = driver.session()) {
+//            String greeting = session.writeTransaction(new TransactionWork<String>() {
+//                @Override
+//                public String execute(Transaction tx) {
+//                    StatementResult result = tx.run(command,
+//                            parameters("message", message));
+//                    return result.single().get(0).asString();
+//                }
+//            });
+//        }
+//    }
+//
+//    public void runCommand(String command) {
+//        try (Session session = driver.session()) {
+//            String greeting = session.writeTransaction(new TransactionWork<String>() {
+//                @Override
+//                public String execute(Transaction tx) {
+//                    StatementResult result = tx.run(command);
+//                    return null;
+//                }
+//            });
+//        }
 //    }
 
 }
