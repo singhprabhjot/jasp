@@ -13,6 +13,34 @@ public class Person {
     String companyName;
     String ssn;
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
     public void setSsn(String ssn) {
         this.ssn = ssn;
     }

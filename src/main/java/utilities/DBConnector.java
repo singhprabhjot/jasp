@@ -1,3 +1,5 @@
+package utilities;
+
 import org.neo4j.driver.v1.*;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -17,6 +19,7 @@ public class DBConnector implements AutoCloseable {
         driver = GraphDatabase.driver(Constants.CONNECTION_PROTOCOL + "://" + Constants.HOST_URL, AuthTokens.basic(Constants.USERNAME, Constants.PASSWORD));
         File f = new File(Constants.DB_CONFIG_DIRECTORY);
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(f);
+
 
     }
 
@@ -65,11 +68,11 @@ public class DBConnector implements AutoCloseable {
     public List<Record> runTx(String command) {
         List<Record> records;
         try (Session session = driver.session()) {
-            records= session.writeTransaction(new TransactionWork<List<Record>>() {
+            records = session.writeTransaction(new TransactionWork<List<Record>>() {
                 @Override
                 public List<Record> execute(Transaction tx) {
                     StatementResult result = tx.run(command);
-                    List<Record> recordList=result.list();
+                    List<Record> recordList = result.list();
                     System.out.println(recordList.size());
                     return recordList;
                 }

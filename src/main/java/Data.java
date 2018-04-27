@@ -13,7 +13,7 @@ import java.util.Set;
 public class Data {
     static GraphDatabaseService graphDB;
 
-    public enum Labels implements Label, org.neo4j.graphdb.Label {
+    public enum Labels implements  org.neo4j.graphdb.Label {
         USER,
         MOVIE;
     }

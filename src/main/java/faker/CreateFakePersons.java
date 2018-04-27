@@ -7,14 +7,14 @@ import java.util.*;
 /**
  * Created by jaspreet.kaur on 4/26/18.
  */
-public class CreateFakeData {
+public class CreateFakePersons {
     Faker faker = new Faker();
 
     // Number of People you would like to create in the database
     int maxNumberOfPersons;
     int strengthOfRelationships = 3;
 
-    public CreateFakeData(int maxNumberOfPersons) {
+    public CreateFakePersons(int maxNumberOfPersons) {
         this.maxNumberOfPersons = maxNumberOfPersons;
     }
 
@@ -38,20 +38,21 @@ public class CreateFakeData {
         return person;
     }
 
-    public void createMovie(){
-        faker.gameOfThrones().character();
-    }
 
     public void createFriends() {
+        System.out.println("Creating Friends");
         int n = this.maxNumberOfPersons;
         for (int i = 0; i < n; i++) {
             Person person = createPerson();
-            persons.put(person.getUsername(), person);
-            personsList.add(person);
+            if(!persons.containsKey(person.getUsername())){
+                persons.put(person.getUsername(), person);
+                personsList.add(person);
+            }
         }
     }
 
     public void createRelationship() {
+        System.out.println("Creating relationships");
         //Traversing the loop thrice to create more relationships
         for (int j = 0; j < strengthOfRelationships; j++) {
             for (int i = 0; i < personsList.size(); i++) {
@@ -62,12 +63,16 @@ public class CreateFakeData {
                 }
 
                 // Skiping few usernames so as to have mixed type of graph.
-                if ((personsList.get(friend1).getUsername().startsWith("a")) || personsList.get(friend2).getUsername().startsWith("a")) {
-                    continue;
-                } else {
-                    addToFriendList(friend1, friend2);
-                    addToFriendList(friend2, friend1);
+                try {
+                    if ((personsList.get(friend1).getUsername().startsWith("a")) || personsList.get(friend2).getUsername().startsWith("a")) {
+                        continue;
+                    } else {
+                        addToFriendList(friend1, friend2);
+                        addToFriendList(friend2, friend1);
+                    }
+                }catch (Exception e){
                 }
+
             }
         }
     }
@@ -90,15 +95,12 @@ public class CreateFakeData {
 
 
     public static void main(String[] args) {
-        CreateFakeData fakeData = new CreateFakeData(100);
+        CreateFakePersons fakeData = new CreateFakePersons(100);
         fakeData.createFriends();
         fakeData.createRelationship();
-        fakeData.printData();
         System.out.println();
     }
 
-    private void printData() {
-        System.out.println(friendsMap);
-    }
+
 
 }

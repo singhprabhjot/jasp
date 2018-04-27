@@ -1,4 +1,4 @@
-import faker.CreateFakeData;
+import faker.CreateFakePersons;
 
 /**
  * Created by jaspreet.kaur on 4/26/18.
@@ -17,15 +17,15 @@ public class Orchestrator {
     private void runMe() {
         createFakeData();
         dbHelper.deleteLabelIfExists();
-        dbHelper.addFriendsToDB(CreateFakeData.personsList);
+        dbHelper.addFriendsToDB(CreateFakePersons.personsList);
         dbHelper.createIndexOnField("username");
-        dbHelper.createFriendsRelationShip(CreateFakeData.friendsMap);
+        dbHelper.createFriendsRelationShip(CreateFakePersons.friendsMap);
     }
 
 
 
     private void createFakeData() {
-        CreateFakeData fakeData = new CreateFakeData(50);
+        CreateFakePersons fakeData = new CreateFakePersons(50);
         fakeData.createFriends();
         fakeData.createRelationship();
     }

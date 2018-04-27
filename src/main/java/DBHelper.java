@@ -1,5 +1,7 @@
 import com.google.gson.Gson;
 import faker.Person;
+import utilities.Constants;
+import utilities.DBConnector;
 
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +39,7 @@ public class DBHelper {
             for (String s : friendsSet) {
                 String createRelationship = "MATCH (u:PERSON {username:'" + candidate + "'}), (v:PERSON {username:'" + s + "'})\n" +
                         "CREATE (u)-[:FRIENDS]->(v)";
-//              System.out.println(createRelationship);
+//              System.out.println(createRelationshipInTwoUsers);
                 driver.runCommand(createRelationship);
             }
 
